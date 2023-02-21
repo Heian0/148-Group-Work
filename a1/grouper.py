@@ -22,7 +22,9 @@ Jonathan Calver, and Jacqueline Smith
 This file contains classes that define different algorithms for grouping
 students according to chosen criteria and the group members' answers to survey
 questions. This file also contains a class that describes a group of students
-as well as one that describes a grouping (a collection of groups).
+as well as one that describes a grouping (a collection of groups).s
+
+#jeffery is gay
 """
 from __future__ import annotations
 

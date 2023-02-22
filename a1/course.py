@@ -49,6 +49,7 @@ def sort_students(lst: list[Student], attribute: str) -> list[Student]:
     >>> sort_students([s1, s2, s3], 'name') == [s2, s3, s1]
     True
     """
+
     return sorted(lst, key=lambda student: getattr(student, attribute))
 
 
@@ -66,6 +67,7 @@ class Student:
     === Representation Invariants ===
     name is not the empty string
     """
+
     id: int
     name: str
     _q_ans_dict: {int: Answer}
@@ -98,8 +100,9 @@ class Student:
 
     def get_answer(self, question: Question) -> Optional[Answer]:
         """Return this student's answer to the question <question>.
-        Return None if this student does not have an ans# TODO: implement this method!wer to <question>
+        Return None if this student does not have an answer.
         """
+
         if question.id in self._q_ans_dict:
             return self._q_ans_dict[question.id]
 
@@ -169,7 +172,7 @@ class Course:
 
         Hint: the sort_students function might be useful
         """
-        return tuple(self.students)
+        return tuple(sort_students(self.students, "id"))
 
 
 if __name__ == '__main__':

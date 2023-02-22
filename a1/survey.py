@@ -47,7 +47,12 @@ class Question:
 
     def __init__(self, id_: int, text: str) -> None:
         """Initialize this question with the text <text>."""
-        # TODO: implement this method!
+
+        if text == "":
+            raise
+
+        self.id = id_
+        self.text = text
 
     def __str__(self) -> str:
         """Return a string representation of this question that contains both
@@ -56,12 +61,12 @@ class Question:
 
         You can choose the precise format of this string.
         """
-        # TODO: implement this method!
+        raise NotImplementedError
 
     def validate_answer(self, answer: Answer) -> bool:
         """Return True iff <answer> is a valid answer to this question.
         """
-        # TODO: implement this method!
+        raise NotImplementedError
 
     def get_similarity(self, answer1: Answer, answer2: Answer) -> float:
         """Return a float between 0.0 and 1.0 indicating how similar two
@@ -73,8 +78,7 @@ class Question:
         # TODO: implement this method!
 
 
-class MultipleChoiceQuestion:
-    # TODO: make this a child class of another class defined in this file
+class MultipleChoiceQuestion(Question):
     """A question whose answers can be one of several options
 
     === Public Attributes ===

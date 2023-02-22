@@ -100,7 +100,7 @@ class Student:
 
     def get_answer(self, question: Question) -> Optional[Answer]:
         """Return this student's answer to the question <question>.
-        Return None if this student does not have an answer.
+        Return None if this student does not have an answer to <question>
         """
 
         if question.id in self._q_ans_dict:

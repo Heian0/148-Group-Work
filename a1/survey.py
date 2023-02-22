@@ -75,7 +75,7 @@ class Question:
         Preconditions:
             - <answer1> and <answer2> are both valid answers to this question
         """
-        # TODO: implement this method!
+        raise NotImplementedError
 
 
 class MultipleChoiceQuestion(Question):
@@ -86,14 +86,15 @@ class MultipleChoiceQuestion(Question):
     text: the text of this question
 
     === Private Attributes ===
-    TODO: Describe any private attributes you create here
+    sol_list: a list of answers that are the solutions for this question.
+    For example, a MultipleChoiceQuestion would have sol_list of len 1,
 
     === Representation Invariants ===
     text is not the empty string
     """
     id: int
     text: str
-
+    sol_list: list[Answer]
     def __init__(self, id_: int, text: str, options: list[str]) -> None:
         """Initialize a question with the text <text> and id <id> and
         possible answers given in <options>.
@@ -130,7 +131,7 @@ class MultipleChoiceQuestion(Question):
         # TODO: implement this method or remove it (to inherit it as is)
 
 
-class NumericQuestion:
+class NumericQuestion(Question):
     # TODO: make this a child class of another class defined in this file
     """A question whose answer can be an integer between some minimum and
     maximum value (inclusive).
@@ -194,7 +195,7 @@ class NumericQuestion:
         # TODO: implement this method or remove it (to inherit it as is)
 
 
-class YesNoQuestion:
+class YesNoQuestion(MultipleChoiceQuestion):
     # TODO: make this a child class of another class defined in this file
     """A question whose answer is either yes (represented by True) or
     no (represented by False).
@@ -243,7 +244,7 @@ class YesNoQuestion:
         # TODO: implement this method or remove it (to inherit it as is)
 
 
-class CheckboxQuestion:
+class CheckboxQuestion(MultipleChoiceQuestion):
     # TODO: make this a child class of another class defined in this file
     """A question whose answers can be one or more of several options
 

@@ -96,7 +96,7 @@ class Student:
         If this student already has an answer recorded for the question, then
         replace it with <answer>.
         """
-        self._q_ans_dict[question.id] = Answer
+        self._q_ans_dict[question.id] = answer
 
     def get_answer(self, question: Question) -> Optional[Answer]:
         """Return this student's answer to the question <question>.

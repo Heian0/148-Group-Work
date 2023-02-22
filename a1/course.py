@@ -60,27 +60,33 @@ class Student:
     name: the name of the student
 
     === Private Attributes ===
-    TODO: Describe any private attributes you create here
+    _q_ans_dict: a dictionary where keys are id's for Questions and the
+    value is the students answer to the question with respective id.
 
     === Representation Invariants ===
     name is not the empty string
     """
     id: int
     name: str
+    _q_ans_dict: {int: Answer}
 
     def __init__(self, id_: int, name: str) -> None:
         """Initialize a student with name <name> and id <id>"""
-        # TODO: implement this method!
+        self.id = id_
+        self.name = name
+        self._q_ans_dict = {}
 
     def __str__(self) -> str:
         """Return the name of this student """
-        # TODO: implement this method!
+        return self.name
 
     def has_answer(self, question: Question) -> bool:
         """Return True iff this student has an answer for a question with the
         same id as <question> and that answer is a valid answer for <question>.
         """
-        # TODO: implement this method!
+        # below is incomplete need to check validity of the answer later
+        return question.id in self._q_ans_dict
+        # and self._q_ans_dict[question.id].is_valid() or something
 
     def set_answer(self, question: Question, answer: Answer) -> None:
         """Record this student's answer <answer> to the question <question>.
@@ -88,13 +94,16 @@ class Student:
         If this student already has an answer recorded for the question, then
         replace it with <answer>.
         """
-        # TODO: implement this method!
+        self._q_ans_dict[question.id] = Answer
 
     def get_answer(self, question: Question) -> Optional[Answer]:
         """Return this student's answer to the question <question>.
-        Return None if this student does not have an answer to <question>
+        Return None if this student does not have an ans# TODO: implement this method!wer to <question>
         """
-        # TODO: implement this method!
+        if question.id in self._q_ans_dict:
+            return self._q_ans_dict[question.id]
+
+        return None
 
 
 class Course:
@@ -117,7 +126,8 @@ class Course:
     def __init__(self, name: str) -> None:
         """Initialize a course with the name of <name>.
         """
-        # TODO: implement this method!
+        self.name = name
+        self.students = []
 
     def enroll_students(self, students: list[Student]) -> None:
         """Enroll all students in <students> in this course.
@@ -125,13 +135,31 @@ class Course:
         If adding any student would violate a representation invariant,
         do not add any of the students in <students> to the course.
         """
-        # TODO: implement this method!
+        temp_id_list = []
+
+        for student in self.students:
+            temp_id_list.append(student.id)
+
+        for student in students:
+            if student.name != "" and student.id not in temp_id_list:
+                self.students.append(student)
+
+            # in the case that the passed list of students contains two
+            # students with the same id.
+            temp_id_list.append(student.id)
 
     def all_answered(self, survey: Survey) -> bool:
         """Return True iff all the students enrolled in this course have a
         valid answer for every question in <survey>.
         """
-        # TODO: implement this method!
+        result = True
+
+        for student in self.students:
+            for question in survey:
+                if not student.has_answer(question):
+                    return False
+
+        return result
 
     def get_students(self) -> tuple[Student]:
         """Return a tuple of all students enrolled in this course.
@@ -141,7 +169,7 @@ class Course:
 
         Hint: the sort_students function might be useful
         """
-        # TODO: implement this method!
+        return tuple(self.students)
 
 
 if __name__ == '__main__':

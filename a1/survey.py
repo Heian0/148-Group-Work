@@ -86,15 +86,15 @@ class MultipleChoiceQuestion(Question):
     text: the text of this question
 
     === Private Attributes ===
-    sol_list: a list of answers that are the solutions for this question.
-    For example, a MultipleChoiceQuestion would have sol_list of len 1,
+    sol_list: a list of options to select for this MultipleChoiceQuestion
 
     === Representation Invariants ===
     text is not the empty string
     """
     id: int
     text: str
-    sol_list: list[Answer]
+    _options: list[str]
+
     def __init__(self, id_: int, text: str, options: list[str]) -> None:
         """Initialize a question with the text <text> and id <id> and
         possible answers given in <options>.
@@ -103,7 +103,8 @@ class MultipleChoiceQuestion(Question):
             - No two elements in <options> are the same string
             - <options> contains at least two elements
         """
-        # TODO: implement this method or remove it (to inherit it as is)
+        Question.__init__(id_, text)
+        self._options = options
 
     def __str__(self) -> str:
         """Return a string representation of this question including the
@@ -119,7 +120,7 @@ class MultipleChoiceQuestion(Question):
         An answer is valid if its content is one of the answer options for this
         question.
         """
-        # TODO: implement this method or remove it (to inherit it as is)
+        return answer.content in self._options
 
     def get_similarity(self, answer1: Answer, answer2: Answer) -> float:
         """Return 1.0 iff <answer1>.content and <answer2>.content are equal and
@@ -128,7 +129,10 @@ class MultipleChoiceQuestion(Question):
         Preconditions:
             - <answer1> and <answer2> are both valid answers to this question.
         """
-        # TODO: implement this method or remove it (to inherit it as is)
+        if answer1.content == answer2.content:
+            return 1.0
+
+        return 0.0
 
 
 class NumericQuestion(Question):
@@ -139,6 +143,8 @@ class NumericQuestion(Question):
     === Public Attributes ===
     id: the id of this question
     text: the text of this question
+    _min: minimum of valid answer
+    _max: maximum of valid answer
 
     === Private Attributes ===
     TODO: Describe any private attributes you create here
@@ -148,6 +154,8 @@ class NumericQuestion(Question):
     """
     id: int
     text: str
+    _max: float
+    _min: float
 
     def __init__(self, id_: int, text: str, min_: int, max_: int) -> None:
         """Initialize a question with id <id_> and text <text> whose possible
@@ -156,7 +164,12 @@ class NumericQuestion(Question):
         Preconditions:
             - min_ < max_
         """
-        # TODO: implement this method or remove it (to inherit it as is)
+        if min_ >= max:
+            raise ValueError
+
+        Question.__init__(id_, text)
+        self._min = min
+        self._max = max
 
     def __str__(self) -> str:
         """Return a string representation of this question including the
@@ -170,7 +183,7 @@ class NumericQuestion(Question):
         """Return True iff the content of <answer> is an integer between the
         minimum and maximum (inclusive) possible answers to this question.
         """
-        # TODO: implement this method or remove it (to inherit it as is)
+        return self._min <= answer.content <= self._max
 
     def get_similarity(self, answer1: Answer, answer2: Answer) -> float:
         """Return the similarity between <answer1> and <answer2> over the range

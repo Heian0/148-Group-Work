@@ -176,17 +176,24 @@ class Group:
         Preconditions:
             - len(members) >= 1
         """
-        # TODO: implement this method!
+        if not members:
+            raise ValueError
+
+        self._members = members
 
     def __len__(self) -> int:
         """Return the number of members in this group """
-        # TODO: implement this method!
+        return len(self._members)
 
     def __contains__(self, member: Student) -> bool:
         """Return True iff this group contains a member with the same id
         as <member>.
         """
-        # TODO: implement this method!
+        for m in self._members:
+            if m.id == member.id:
+                return True
+
+        return False
 
     def __str__(self) -> str:
         """Return a string containing the names of all members in this group
@@ -194,7 +201,16 @@ class Group:
 
         You can choose the precise format of this string.
         """
-        # TODO: implement this method!
+        s = ""
+        listy = self._members[:]
+        last_member = listy.pop()
+
+        for member in listy:
+            s = s + member.name + ", "
+
+        s += last_member.name
+
+        return s
 
     def get_members(self) -> list[Student]:
         """Return a list of members in this group.
@@ -202,7 +218,7 @@ class Group:
         This list should be a shallow copy of the self._members attribute.
         See the handout for more information about what a shallow copy is.
         """
-        # TODO: implement this method!
+        return self._members[:]
 
 
 class Grouping:
@@ -219,11 +235,11 @@ class Grouping:
 
     def __init__(self) -> None:
         """Initialize a Grouping that contains zero groups. """
-        # TODO: implement this method!
+        self._groups = []
 
     def __len__(self) -> int:
         """Return the number of groups in this grouping """
-        # TODO: implement this method!
+        return len(self._groups)
 
     def __str__(self) -> str:
         """Return a multi-line string that includes the names of all the
@@ -232,14 +248,36 @@ class Grouping:
 
         You can choose the precise format of this string.
         """
-        # TODO: implement this method!
+        s = ""
+
+        for group in self._groups:
+            temp = ""
+            listy = group[:]
+            last_member = listy.pop()
+
+            for member in listy:
+                temp = temp + member.name + ", "
+
+            temp = temp + last_member.name + "\n"
+            s += temp
+
+        return s.rstrip()
 
     def add_group(self, group: Group) -> bool:
         """Add <group> to this grouping and return True iff the addition does
         not violate a representation invariant; otherwise leave this grouping
         unchanged and return False.
         """
-        # TODO: implement this method!
+        if not group:
+            return False
+
+        for member in group:
+            listy = group.remove(member)
+            for item in listy:
+                if item.id == member.id:
+                    return False
+
+        self._groups.append(group)
 
     def get_groups(self) -> list[Group]:
         """Return a list of all groups in this grouping.
@@ -247,7 +285,7 @@ class Grouping:
         This list should be a shallow copy of the self._groups attribute.
         See the handout for more information about what a shallow copy is.
         """
-        # TODO: implement this method!
+        return self._groups[:]
 
 
 class Grouper:

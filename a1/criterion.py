@@ -50,11 +50,10 @@ class Criterion:
         Each implementation of this abstract class will measure satisfaction of
         a criterion differently.
         """
-        # TODO: implement this method!
+        raise NotImplementedError
 
 
-class HomogeneousCriterion:
-    # TODO: make this a child class of another class defined in this file
+class HomogeneousCriterion(Criterion):
     """A criterion used to evaluate the quality of a group based on the group
     members' answers for a given question.
 
@@ -83,11 +82,20 @@ class HomogeneousCriterion:
         Preconditions:
             - len(answers) > 0
         """
-        # TODO: implement this method or remove it (to inherit it as is)
+        check_valid_answers(question, answers)
+
+        if len(answers) == 1:
+            return 0.0
+
+        count = 0
+        listy = [(x, y) for i, x in enumerate(answers) for y in answers[i + 1:]]
+        for item in listy:
+            count += question.get_similarity(item[0], item[1])
+
+        return count / len(listy)
 
 
-class HeterogeneousCriterion:
-    # TODO: make this a child class of another class defined in this file
+class HeterogeneousCriterion(Criterion):
     """A criterion used to evaluate the quality of a group based on the group
     members' answers for a given question.
 
@@ -116,11 +124,20 @@ class HeterogeneousCriterion:
         Preconditions:
             - len(answers) > 0
         """
-        # TODO: implement this method or remove it (to inherit it as is)
+        check_valid_answers(question, answers)
+
+        if len(answers) == 1:
+            return 0.0
+
+        count = 0
+        listy = [(x, y) for i, x in enumerate(answers) for y in answers[i + 1:]]
+        for item in listy:
+            count += question.get_similarity(item[0], item[1])
+
+        return 1.0 - count / len(listy)
 
 
-class LonelyMemberCriterion:
-    # TODO: make this a child class of another class defined in this file
+class LonelyMemberCriterion(Criterion):
     """A criterion used to measure the quality of a group of students
     according to the group members' answers to a question.
 
@@ -149,7 +166,36 @@ class LonelyMemberCriterion:
         Preconditions:
             - len(answers) > 0
         """
-        # TODO: implement this method or remove it (to inherit it as is)
+        check_valid_answers(question, answers)
+
+        if len(answers) == 1:
+            return 0.0
+
+        for ans in answers:
+            count = 0
+            ans_cpy = answers[:]
+            ans_cpy.remove(ans)
+            for ans1 in ans_cpy:
+                if ans.content == ans1.content:
+                    count += 1
+            if count == 0:
+                return 0.0
+
+        return 1.0
+
+
+def check_valid_answers(q: Question, answers: list[Answer]) -> None:
+    """
+    Helper function for Criterion class that checks if
+    <answers> is an empty list as well as if all Answer
+    object in <answers> are valid answers to <q>.
+    """
+    if not answers:
+        raise ValueError
+
+    for ans in answers:
+        if not q.validate_answer(ans):
+            raise InvalidAnswerError
 
 
 if __name__ == '__main__':

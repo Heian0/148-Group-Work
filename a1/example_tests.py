@@ -300,13 +300,11 @@ class TestSurvey:
             assert isinstance(survey_._get_weight(question), type(weights[i]))
 
     def test_set_weight(self, survey_, questions) -> None:
-        survey_._weights = {}
         survey_.set_weight(999, questions[0])
         assert survey_._get_weight(questions[0]) == 999
 
     def test_set_criterion(self, survey_, questions) -> None:
-        survey_._criteria = {}
-        criterion_ = criterion.HomogeneousCriterion()
+        criterion_ = criterion.LonelyMemberCriterion()
         survey_.set_criterion(criterion_, questions[0])
         assert survey_._get_criterion(questions[0]) == criterion_
 
